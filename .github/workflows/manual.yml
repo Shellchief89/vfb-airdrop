@@ -1,14 +1,27 @@
-# name: Run Airdrop
+name: Airdrop Workflow
+
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # allows you to trigger the workflow manually
+
 jobs:
   airdrop:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Install deps
-        run: pip install solana
-      - name: Execute script
-        env:
-          VFB_PRIVATE_KEY: ${{ secrets.VFB_PRIVATE_KEY }}
-        run: python vfb_airdrop.py
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install Dependencies
+      run: |
+        pip install solana
+
+    - name: Run Airdrop Script
+      env:
+        VFB_PRIVATE_KEY: ${{ secrets.VFB_PRIVATE_KEY }}  # secret stored in GitHub
+      run: |
+        python vfb_airdrop.py
